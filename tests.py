@@ -94,7 +94,7 @@ class ApiRoutesCase(unittest.TestCase):
                         "Expected response JSON Password to be \n {}".format(t.password) +
                         "\n Was \n {} \n instead".format(r_dict["password"]))
         
-    def test3_editing_existing_room(self):
+    def test3_protecting_against_trolls(self):
         '''tests if passwords are successful in keeping bad POST requests from modifying things'''
         ep = self.root_endpoint
         r = send_get_to_room_url(ep, 'new_room')
@@ -118,7 +118,22 @@ class ApiRoutesCase(unittest.TestCase):
                         ))
         
         self.assertIsInstance(r.json(), str, 'Allowing POSTs with bad password fields to edit the timer')
+
+        r = send_get_to_room_url(ep, 'new_room')
+
+        self.assertEqual(r.status_code, 200,
+                    'expected status code 200, got {} instead'.format(
+                        r.status_code
+                    ))      
         
+        r = send_post_to_room_url(ep, 'new_room', r.json())
+
+        self.assertIsInstance(r.json(), str, 'Not hashing the password server-side, can edit a timer just by doing a GET and submitting the same JSON back')
+
+    def test4_updating_server_timer_with_client_info(self):
+        
+
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
