@@ -20,10 +20,8 @@ def room(name):
             return room_timers[name].json_repr()
         except KeyError:
             return jsonify('No room at this URL')
-
     elif request.method == 'POST':
         r = request.get_json()
-
         try:
             if room_timers[name].json_repr()['password'] == helpers.hash_password(r['password']):
                 room_timers[name] = helpers.Timer(
@@ -38,8 +36,5 @@ def room(name):
                                                    start_time=r['start_time'],
                                                    password=r['password'])
             return redirect(url_for('room', name=name))
-
     else:
         return redirect(url_for('index'))
-
-        # 
