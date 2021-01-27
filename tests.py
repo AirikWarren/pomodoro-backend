@@ -1,8 +1,11 @@
 import unittest
 import requests
+import json
+import os
+import shutil
+
 
 from app import server
-from app.routes import room_timers
 from app.helpers import Timer
 
 def send_get_to_room_url(root_endpoint : str, room_name : str) -> requests.Response:
@@ -20,20 +23,44 @@ class ApiRoutesCase(unittest.TestCase):
     def setUp(self):
         self.server = server 
         self.root_endpoint = 'http://localhost:5000/'
+        assert int(server.testing) == 1 
+
+        self.db_path = server.config['DB_PATH']
+
+        try:
+            os.mkdir(server.config['DB_PATH'])
+        except FileExistsError:
+            pass
+
+
+        t = Timer(
+            duration=300,
+            is_playing=False,
+        )
+        
+        t_json = open(self.db_path+'/test_room.json', 'w')
+        json.dump(t.json_repr(), t_json)
+        t_json.close()
+
+    
+    def tearDown(self):
+        shutil.rmtree(self.db_path)
 
     def test1_receiving_Json_from_existing_room(self):
         '''makes sure that the test_room is up and that JSON can be retrieved from it'''
         ep = self.root_endpoint
+        db_path = self.db_path
+        f = open(db_path+'/test_room.json')
+        test_json = json.load(f)
+        f.close()
         
         t = Timer(
-            duration=400,
-            is_playing=True,
-            start_time=room_timers['test_room'].start_time,
+            duration=test_json['duration'],
+            is_playing=test_json['is_playing'],
+            start_time=test_json['start_time'],
+            password=test_json['password']
         )
-        
-        # assuring that the server is actually started and the test_room is up
-        self.assertEqual(t.json_repr(), room_timers['test_room'].json_repr())
-        
+
         r = send_get_to_room_url(ep, 'test_room')
         self.assertEqual(r.status_code, 200, 
                         'Expected status code 200, got {} instead'.format(
@@ -97,13 +124,32 @@ class ApiRoutesCase(unittest.TestCase):
     def test3_protecting_against_trolls(self):
         '''tests if passwords are successful in keeping bad POST requests from modifying things'''
         ep = self.root_endpoint
+
         r = send_get_to_room_url(ep, 'new_room')
 
         self.assertEqual(r.status_code, 200,
                         'expected status code 200, got {} instead'.format(
                             r.status_code
                         ))
+
+        t = Timer(
+            duration=400,
+            is_playing=False,
+            start_time=0,
+            password='password123'
+        )
         
+        r = send_post_to_room_url(ep, 'new_room', t.json_repr())
+
+        self.assertEqual(r.status_code, 200,
+                        'expected status code 200, got {} instead'.format(
+                            r.status_code
+                        ))
+        self.assertEqual(r.headers['content-type'], 'application/json',
+                        'Expected "application/json" in header, got {} instead'.format(
+                            r.headers['content-type']
+                        ))
+
         t = Timer(
             duration=100,
             is_playing=False,
