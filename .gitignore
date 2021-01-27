@@ -131,3 +131,5 @@ dmypy.json
 
 # vim being dumb
 *.py~
+json/
+json_testing/

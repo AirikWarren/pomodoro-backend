@@ -30,9 +30,10 @@ class Timer:
                this object to do it'
     '''
 
-    def __init__(self, duration : int, is_playing : bool,
-                start_time : Union[int, None] = None,
-                password : Union[str, None] = None):
+    def __init__(self, duration : int=300,
+                is_playing : bool=False,
+                start_time : Union[int, None]=None,
+                password : Union[str, None]=None):
 
         if start_time:
             self.start_time = start_time
