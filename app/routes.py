@@ -3,8 +3,6 @@ import json
 from flask import redirect, url_for, jsonify, request
 from app import server, helpers 
 
-
-
 @server.route('/')
 @server.route('/index')
 def index():
@@ -12,43 +10,50 @@ def index():
  
 @server.route('/room/<name>', methods=['GET', 'POST']) 
 def room(name):
-    url_to_room = server.config['DB_PATH']+'/{}.json'.format(name)
+    path_to_timer_json = server.config['DB_PATH']+'/{}.json'.format(name) 
+
     if request.method == 'GET':
         try:
-            return(json.load(open(url_to_room)))
+            f = open(path_to_timer_json, 'r')
+            json_from_db = json.load(f)
+            f.close()
+            return json_from_db
         except FileNotFoundError:
-            return jsonify('There is no room at {}'.format(url_to_room))
+            return jsonify('There is no json at {}'.format(path_to_timer_json))
+
+    # When a client submits a GET request 
     elif request.method == 'POST':
-        r = request.get_json()
+        json_from_post = request.get_json()
         try:
-            json_file = open(url_to_room, 'r+') 
-            json_timer = json.load(json_file)
-            if json_timer['password'] == helpers.hash_password(r['password']):
+            f = open(path_to_timer_json, 'r+') 
+            json_from_db = json.load(f)
+            if json_from_db['password'] == helpers.hash_password(json_from_post['password']):
                 timer_obj = helpers.Timer(
-                    r['duration'],
-                    r['is_playing'],
-                    start_time=r['start_time'],
-                    password=r['password']
+                    json_from_post['duration'],
+                    json_from_post['is_playing'],
+                    json_from_post['start_time'],
+                    json_from_post['password']
                 )
-                new_json = timer_obj.json_repr()
-                json.dump(new_json, json_file)
-                json_file.close()
+                json_to_db = timer_obj.json_repr()
+                json.dump(json_to_db, f)
+                f.close()
+                del(timer_obj)
                 return redirect(url_for('room', name=name))
             else:
-                json_file.close()
+                f.close()
                 return jsonify('Unable to edit timer at {}, admin password incorrect'.format(
                             url_for('room', name=name)))
         except FileNotFoundError:
-            json_file = open(url_to_room, 'w')
+            f = open(path_to_timer_json, 'w')
             timer_obj = helpers.Timer(
-                r['duration'],
-                r['is_playing'],
-                start_time=r['start_time'],
-                password=r['password']
+                json_from_post['duration'],
+                json_from_post['is_playing'],
+                json_from_post['start_time'],
+                json_from_post['password']
             )
-            new_json = timer_obj.json_repr()
-            json.dump(new_json, json_file)
-            json_file.close()
+            json_to_db = timer_obj.json_repr()
+            json.dump(json_to_db, f)
+            f.close()
             return redirect(url_for('room', name=name))
     else:
         return redirect(url_for('index'))
