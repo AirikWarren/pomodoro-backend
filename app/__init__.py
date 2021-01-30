@@ -1,6 +1,6 @@
 import os 
 from flask import Flask 
-from config import Config
+from config import Config, DevelopmentConfig
 
 server = Flask(__name__)
 

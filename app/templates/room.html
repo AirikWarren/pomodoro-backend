@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        {% block title %}<title>{{ name }}</title>{% endblock %}
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    {% block content %}
+    <body>
+        <p> Room name: {{ name }} </p>
+        <div id="test">This should get changed</div>
+        <script src="/static/room.js" async defer></script>
+    </body>
+    {% endblock %}
+</html>

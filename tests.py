@@ -25,7 +25,7 @@ def send_post_to_room_url(root_endpoint: str,
 class ApiRoutesCase(unittest.TestCase):
     def setUp(self):
         self.server = server
-        self.root_endpoint = 'http://localhost:5000/'
+        self.root_endpoint = 'http://localhost:5000/api/'
         assert int(server.testing) == 1
 
         self.db_path = server.config['DB_PATH']

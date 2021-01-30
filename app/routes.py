@@ -1,14 +1,19 @@
 '''URL routing / view functions'''
 import json 
-from flask import redirect, url_for, jsonify, request
+from flask import redirect, url_for, jsonify, request, render_template
 from app import server, helpers 
 
 @server.route('/')
 @server.route('/index')
 def index():
     return jsonify(str(int(server.testing))) 
- 
-@server.route('/room/<name>', methods=['GET', 'POST']) 
+
+@server.route('/room/<name>', methods=['GET', 'POST'])
+def room_browser(name):
+    if request.method == 'GET':
+        return render_template('room.html', name=name) 
+
+@server.route('/api/room/<name>', methods=['GET', 'POST']) 
 def room(name):
     path_to_timer_json = server.config['DB_PATH']+'/{}.json'.format(name) 
 
@@ -25,8 +30,9 @@ def room(name):
     elif request.method == 'POST':
         json_from_post = request.get_json()
         try:
-            f = open(path_to_timer_json, 'r+') 
+            f = open(path_to_timer_json, 'r') 
             json_from_db = json.load(f)
+            f.close()
             if json_from_db['password'] == helpers.hash_password(json_from_post['password']):
                 timer_obj = helpers.Timer(
                     json_from_post['duration'],
@@ -35,6 +41,7 @@ def room(name):
                     json_from_post['password']
                 )
                 json_to_db = timer_obj.json_repr()
+                f = open(path_to_timer_json, 'w')
                 json.dump(json_to_db, f)
                 f.close()
                 del(timer_obj)

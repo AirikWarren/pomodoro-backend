@@ -5,8 +5,10 @@ base_dir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
     DEBUG = False
-    TESTING = bool(os.environ.get("TESTING"))
-    if TESTING:
+    TESTING = False 
+    DB_PATH = base_dir+'/json'
+
+class DevelopmentConfig(Config):
+        ENV= "development"
+        DEVELOPMENT= True
         DB_PATH = base_dir+'/json_testing'
-    else:
-        DB_PATH = base_dir+'/json'
