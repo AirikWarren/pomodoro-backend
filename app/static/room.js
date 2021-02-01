@@ -1,10 +1,32 @@
-title = window.document.title
-message = window.document.getElementById("test")
+const title = window.document.title;
+const timerElem = window.document.getElementById("progressBar");
+let timerText = window.document.getElementById("progressText");;
 
-rightNow = () => Math.floor(Date.now() / 1000) // Unix timestamp, in seconds
+rightNow = () => Math.floor(Date.now() / 1000); // Unix timestamp, in seconds
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function updateProgressBar(t) {
+    let secondsLeft = t.timeLeft();
+    if (secondsLeft !== "BEEP") {
+        timerElem.setAttribute('value', t.progressMade());
+    } else {
+        timerElem.setAttribute('value', 0)
+    }
+}
+
+function updateProgressText(t) {
+    let secondsLeft = t.timeLeft();
+    let minutesLeft = 0;
+    if (secondsLeft !== "BEEP") {
+        minutesLeft = Math.floor(secondsLeft / 60);
+        secondsLeft = secondsLeft % 60;
+        return `${minutesLeft} Minutes ${secondsLeft} Seconds`;
+    } else {
+        return "TIME IS UP!"
+    }
 }
 
 class TimerClass {
@@ -32,16 +54,17 @@ class TimerClass {
     }
     
     stop (){
-        this.is_playing = false;
+        this.isPlaying = false;
         this.duration = this.endTime - rightNow()
         this.startTime = null;
     }
 
     timeLeft () {
-        currentTime = rightNow();
+        let currentTime = rightNow();
         if (currentTime < this.endTime) {
             return this.endTime - currentTime
         } else {
+            this.isPlaying = false;
             return "BEEP" }
     }
 
@@ -49,7 +72,18 @@ class TimerClass {
         if (rightNow() < this.endTime) {
             return Math.floor((this.timeLeft() / this.duration) * 100);
         } else {
+            this.isPlaying = false;
             return 0;
+        }
+    }
+
+    objRepr () {
+        this.timeLeft()
+        return {
+            "start_time" : this.startTime,
+            "password" : this.password,
+            "duration" : this.duration,
+            "is_playing" : this.isPlaying
         }
     }
 
@@ -63,13 +97,10 @@ class TimerClass {
     }
 }
 
-f = fetch('/api/room/' + String(title), {method : 'get'})
-    .then(response => response.json())
-    .then(data => message.innerText=data);
+t = new TimerClass(100, false, rightNow(), "bruhpass");
 
-t = new TimerClass(30, false, rightNow(), "bruhpass");
-
-fs = fetch('/api/room/' + String(title), {
+sendPost = () => 
+    fetch('/api/room/' + String(title), {
             method : 'post',
             headers : {
             "Content-Type" : "application/json"
@@ -78,10 +109,24 @@ fs = fetch('/api/room/' + String(title), {
             .then(response => response.json())
             .then(data => console.log('the original POST ran: ' + data));
 
-function ensure_client_timer_is_up_to_date(timer_obj) {
-    return fetch('/api/room/' + String(title), {method : 'get'})
-        .then(response => response.json())
-        .then(data => console.log(typeof(data)));
+let obj;
+
+sendGet = () =>  {
+    fetch('/api/room/' + String(title), {method : 'get'})
+    .then(response => response.json())
+    .then(data => obj = data)
 }
 
-rr = ensure_client_timer_is_up_to_date(t)
+g = sendGet
+p = sendPost
+
+t.start()
+
+setInterval(
+    (
+        () => {
+            updateProgressBar(t);
+            timerText.innerText = updateProgressText(t);
+            console.log(window.document.URL)
+        }
+    ), 1000)
