@@ -7,13 +7,14 @@
         <link rel="stylesheet" href="">
     </head>
     {% block content %}
-    <body>
-        <h1> Room name: {{ name }} </h1>
+    <body onload="main()">
+        <script src="/static/room.js" async defer></script>
+        <script src="/static/main.js" async defer></script>
+        <h1 id="roomHeader"> Loading Session Data for. . . {{ name }} </h1>
         <div id="timerProgress">
             <h2 id="progressText">Loading<i id="progressText">. . .</i></h2>
                 <progress id="progressBar" value="100" max="100"> 100% </progress>
         </div>
-        <script src="/static/room.js" async defer></script>
     </body>
     {% endblock %}
 </html>

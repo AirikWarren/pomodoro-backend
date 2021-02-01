@@ -1,8 +1,23 @@
-const title = window.document.title;
-const timerElem = window.document.getElementById("progressBar");
-let timerText = window.document.getElementById("progressText");;
-
 rightNow = () => Math.floor(Date.now() / 1000); // Unix timestamp, in seconds
+
+sendGet = () =>  {
+    fetch('/api/room/' + String(title), {method : 'get'})
+    .then(response => response.json())
+    .then(data => serverResponseObj = data)
+}
+
+sendPost = () => 
+    fetch('/api/room/' + String(title), {
+            method : 'post',
+            headers : {
+            "Content-Type" : "application/json"
+            },
+            body : t.jsonRepr()})
+            .then(response => response.json())
+            .then(data => console.log('the original POST ran: ' + data));
+
+g = sendGet
+p = sendPost
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -26,6 +41,14 @@ function updateProgressText(t) {
         return `${minutesLeft} Minutes ${secondsLeft} Seconds`;
     } else {
         return "TIME IS UP!"
+    }
+}
+
+function updateRoomHeader(serverResponseObj, roomName) {
+    if (typeof(serverResponseObj) === typeof("")){
+        return "There isn't an active session at this URL"
+    } else {
+        return `Room name: ${roomName}`
     }
 }
 
@@ -97,36 +120,3 @@ class TimerClass {
     }
 }
 
-t = new TimerClass(100, false, rightNow(), "bruhpass");
-
-sendPost = () => 
-    fetch('/api/room/' + String(title), {
-            method : 'post',
-            headers : {
-            "Content-Type" : "application/json"
-            },
-            body : t.jsonRepr()})
-            .then(response => response.json())
-            .then(data => console.log('the original POST ran: ' + data));
-
-let obj;
-
-sendGet = () =>  {
-    fetch('/api/room/' + String(title), {method : 'get'})
-    .then(response => response.json())
-    .then(data => obj = data)
-}
-
-g = sendGet
-p = sendPost
-
-t.start()
-
-setInterval(
-    (
-        () => {
-            updateProgressBar(t);
-            timerText.innerText = updateProgressText(t);
-            console.log(window.document.URL)
-        }
-    ), 1000)
