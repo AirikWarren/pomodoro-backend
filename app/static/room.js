@@ -1,23 +1,26 @@
 rightNow = () => Math.floor(Date.now() / 1000); // Unix timestamp, in seconds
 
-sendGet = () =>  {
-    fetch('/api/room/' + String(title), {method : 'get'})
-    .then(response => response.json())
-    .then(data => serverResponseObj = data)
+async function sendGet(callback_to_use_result_in) {
+    let response = await fetch('/api/room/' + String(title, {method : 'get'}));
+    let json = await response.json();
+
+    return json
 }
 
-sendPost = () => 
+sendGetOld = (cb) =>  {
+    fetch('/api/room/' + String(title), {method : 'get'})
+    .then(response => response.json())
+    .then(data => cb(data))
+}
+
+sendPost = (t) => 
     fetch('/api/room/' + String(title), {
             method : 'post',
             headers : {
             "Content-Type" : "application/json"
-            },
-            body : t.jsonRepr()})
-            .then(response => response.json())
-            .then(data => console.log('the original POST ran: ' + data));
-
-g = sendGet
-p = sendPost
+            }, body : t.jsonRepr()}
+        ).then(response => response.json())
+        .then(data => console.log('the original POST ran: ' + data));
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));

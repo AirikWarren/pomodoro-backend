@@ -3,22 +3,19 @@ const timerElem = window.document.getElementById("progressBar");
 let timerText = window.document.getElementById("progressText");
 let roomText = window.document.getElementById("roomHeader");
 
-function main() {
-    let serverResponseObj;
-    sendGet();
-    t = check_for_active_session(serverResponseObj) 
-    setInterval(
-        (
-            () => {
-                updateProgressBar(t);
-                timerText.innerText = updateProgressText(t);
-                roomText.innerText = updateRoomHeader(obj, title)
-            }
-        ), 1000)
-    // YES? 
-        // then display it
-    // NO?
-        // update the HTMl to reflect this, suggest the user create one 
+async function main() {
+    setInterval(update_everything, 1000)
+}
+
+function update_everything () {
+    sendGet().then(
+        response => {
+            t = check_for_active_session(response);
+            updateProgressBar(t);
+            timerText.innerText = updateProgressText(t);
+            roomText.innerText = updateRoomHeader(response, title)
+        }
+    )
 }
 
 function check_for_active_session(serverResponseObj) {
