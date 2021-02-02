@@ -4,13 +4,13 @@ let timerText = window.document.getElementById("progressText");
 let roomText = window.document.getElementById("roomHeader");
 
 async function main() {
-    setInterval(update_everything, 1000)
+    setInterval(updateEverything, 1000)
 }
 
-function update_everything () {
+function updateEverything () {
     sendGet().then(
         response => {
-            t = check_for_active_session(response);
+            t = checkForActiveSession(response);
             updateProgressBar(t);
             timerText.innerText = updateProgressText(t);
             roomText.innerText = updateRoomHeader(response, title)
@@ -18,7 +18,7 @@ function update_everything () {
     )
 }
 
-function check_for_active_session(serverResponseObj) {
+function checkForActiveSession(serverResponseObj) {
     if (typeof(serverResponseObj) === typeof("")) {
         return new TimerClass(0, false, rightNow(), "password")
     } else if (typeof(serverResponseObj) === typeof({'foo':'bar'})){

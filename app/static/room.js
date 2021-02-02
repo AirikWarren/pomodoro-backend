@@ -1,6 +1,15 @@
-rightNow = () => Math.floor(Date.now() / 1000); // Unix timestamp, in seconds
+/**
+ * Returns a Unix timestamp, in seconds.
+ */
+rightNow = () => Math.floor(Date.now() / 1000);
 
-async function sendGet(callback_to_use_result_in) {
+/**
+ * Sends a GET request to the /api/room/{Window.title} route, returns
+ * a promise that will resolve to JSON.
+ * 
+ * @returns {Promise}
+ */
+async function sendGet() {
     let response = await fetch('/api/room/' + String(title, {method : 'get'}));
     let json = await response.json();
 
@@ -21,10 +30,6 @@ sendPost = (t) =>
             }, body : t.jsonRepr()}
         ).then(response => response.json())
         .then(data => console.log('the original POST ran: ' + data));
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 function updateProgressBar(t) {
     let secondsLeft = t.timeLeft();
