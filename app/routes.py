@@ -26,7 +26,6 @@ def room(name):
         except FileNotFoundError:
             return jsonify('There is no json at {}'.format(path_to_timer_json))
 
-    # When a client submits a GET request 
     elif request.method == 'POST':
         json_from_post = request.get_json()
         try:
