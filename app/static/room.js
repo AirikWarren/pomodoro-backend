@@ -12,7 +12,6 @@ rightNow = () => Math.floor(Date.now() / 1000);
 async function sendGet() {
     let response = await fetch('/api/room/' + String(title, {method : 'get'}));
     let json = await response.json();
-
     return json
 }
 
@@ -62,6 +61,18 @@ function updateRoomHeader(serverResponseObj, roomName) {
 
 class TimerClass {
 
+    /**
+     * 
+     * @param {Number} duration 
+     * duration Timer should run for, in seconds
+     * @param {Boolean} isPlaying 
+     * Whether or not to instantiate the timer with a boolean used to indicate
+     * whether or not the Timer is playing 
+     * @param {Number} startTime 
+     * Unix time stamp, seconds
+     * @param {String} password 
+     * plaintext password, the server-side equivalent of this object stores this hashed
+     */
     constructor (duration=300, isPlaying=false, startTime=rightNow(), password="password") {
         this.password = password
 
@@ -90,6 +101,10 @@ class TimerClass {
         this.startTime = null;
     }
 
+    /**
+     * Returns how many seconds are left until the Timer is finished if the 
+     * timer hasn't already finished. Otherwise returns a string literal "BEEP"
+     */
     timeLeft () {
         let currentTime = rightNow();
         if (currentTime < this.endTime) {
@@ -99,6 +114,14 @@ class TimerClass {
             return "BEEP" }
     }
 
+    /**
+     *  Returns an integer representation the Timer instance's
+     *  progress, expressed as a percentage.
+     * 
+     * e.g. Running this method on A 500 second timer with 250 seconds left
+     * returns 250
+     *   
+     */
     progressMade () {
         if (rightNow() < this.endTime) {
             return Math.floor((this.timeLeft() / this.duration) * 100);
