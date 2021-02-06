@@ -15,12 +15,6 @@ async function sendGet() {
     return json
 }
 
-sendGetOld = (cb) =>  {
-    fetch('/api/room/' + String(title), {method : 'get'})
-    .then(response => response.json())
-    .then(data => cb(data))
-}
-
 sendPost = (t) => 
     fetch('/api/room/' + String(title), {
             method : 'post',
@@ -29,6 +23,16 @@ sendPost = (t) =>
             }, body : t.jsonRepr()}
         ).then(response => response.json())
         .then(data => console.log('the original POST ran: ' + data));
+
+function playSound(url, audioConfig) {
+    timesPlayed = audioConfig.dingsPlayedSinceReset;
+    max = audioConfig.maxNotificationDings;
+    const audio = new Audio(url);
+    if (timesPlayed < max) {
+        audioConfig.dingsPlayedSinceReset++ 
+        audio.play();
+    } 
+}
 
 function updateProgressBar(t) {
     let secondsLeft = t.timeLeft();
@@ -39,15 +43,23 @@ function updateProgressBar(t) {
     }
 }
 
-function updateProgressText(t) {
+function updateProgressText(t, config) {
     let secondsLeft = t.timeLeft();
     let minutesLeft = 0;
     if (secondsLeft !== "BEEP") {
         minutesLeft = Math.floor(secondsLeft / 60);
         secondsLeft = secondsLeft % 60;
-        return `${minutesLeft} Minutes ${secondsLeft} Seconds`;
+        if (secondsLeft >= 10) 
+            return `${minutesLeft}:${secondsLeft}`;
+        else
+            return `${minutesLeft}:0${secondsLeft}`;
     } else {
-        return "TIME IS UP!"
+        if (config.flags.isSessionActive) {
+            playSound(document.location.origin + '/static/notification.mp3', config.audio)
+            return "TIME IS UP"
+        } else {
+            return "Consider starting a session or checking to make sure the URL was entered properly"
+        }
     }
 }
 
