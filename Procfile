@@ -1,1 +1,1 @@
-web: rm -rf ./json; gunicorn pomodoro:app;
+web: rm -rf ./json; gunicorn pomodoro:server;
