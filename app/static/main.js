@@ -4,7 +4,7 @@ let timerText = window.document.getElementById("progressText");
 let roomText = window.document.getElementById("roomHeader");
 
 const DEFAULT_BREAK_LEN = (5 * 60)
-const DEFAULT_WORK_LEN = (5 * 60)
+const DEFAULT_WORK_LEN = (25 * 60)
 
 pageConfig = {
     flags : { isAutoplay : false, isSessionActive : false },
