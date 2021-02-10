@@ -6,7 +6,7 @@ from app import server, helpers
 @server.route('/')
 @server.route('/index')
 def index():
-    return jsonify(str(int(server.testing))) 
+    return render_template("index.html")
 
 @server.route('/room/<name>', methods=['GET', 'POST'])
 def room_browser(name):

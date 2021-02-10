@@ -1,25 +1,18 @@
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        {% block title %}<title>{{ name }}</title>{% endblock %}
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
-    {% block content %}
-    <body onload="main()">
-        <script src="/static/room.js" async defer></script>
-        <script src="/static/main.js" async defer></script>
-        <h1 id="roomHeader"> Loading Session Data for. . . {{ name }} </h1>
-        <div id="timerProgress">
-            <h2 id="progressText">Loading<i id="progressText">. . .</i></h2>
-                <progress id="progressBar" value="100" max="100"> 100% </progress>
-        </div>
+{% extends "base.html" %}
 
-        <div>
-            <button onclick="breakButton()">Take a break</button> 
-            <button onclick="workButton()">Start a work cycle</button>
-        </div>
-    </body>
-    {% endblock %}
-</html>
+{% block content %}
+<body onload="main()">
+    <script src="/static/room.js" async defer></script>
+    <script src="/static/main.js" async defer></script>
+    <h1 id="roomHeader" class="block"> Loading Session Data for. . . {{ name }} </h1>
+    <div id="timerProgress" class="block">
+        <h2 id="progressText">Loading<i id="progressText">. . .</i></h2>
+            <progress id="progressBar" value="100" max="100"> 100% </progress>
+    </div>
+
+    <div class="block">
+        <button onclick="breakButton()" class="button is-primary">Take a break</button> 
+        <button onclick="workButton()" class="button is-success">Start a work cycle</button>
+    </div>
+</body>
+{% endblock %}
