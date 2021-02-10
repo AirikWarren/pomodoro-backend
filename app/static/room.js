@@ -55,7 +55,7 @@ function updateProgressText(t, config) {
             return `${minutesLeft}:0${secondsLeft}`;
     } else {
         if (config.flags.isSessionActive) {
-            playSound(document.location.origin + '/static/notification.mp3', config.audio)
+            playSound(document.location.origin + '/static/alarm.wav', config.audio)
             return "TIME IS UP"
         } else {
             return "Consider starting a session or checking to make sure the URL was entered properly"
