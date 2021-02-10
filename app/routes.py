@@ -5,6 +5,7 @@ from app import server, helpers
 
 @server.route('/')
 @server.route('/index')
+@server.route('/about')
 def index():
     return render_template("index.html")
 

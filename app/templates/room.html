@@ -5,14 +5,15 @@
     <script src="/static/room.js" async defer></script>
     <script src="/static/main.js" async defer></script>
     <h1 id="roomHeader" class="block"> Loading Session Data for. . . {{ name }} </h1>
+    <div class="is-vcentered pt-4 mt-6">
     <div id="timerProgress" class="block">
         <h2 id="progressText">Loading<i id="progressText">. . .</i></h2>
-            <progress id="progressBar" value="100" max="100"> 100% </progress>
+            <progress class="progress is-large is-info" id="progressBar" value="100" max="100"> 100% </progress>
     </div>
-
-    <div class="block">
-        <button onclick="breakButton()" class="button is-primary">Take a break</button> 
-        <button onclick="workButton()" class="button is-success">Start a work cycle</button>
+    <div class="block mt-6 mx-3">
+        <button onclick="breakButton()" class="button is-primary is-light is-outlined mx-3">Take a break</button> 
+        <button onclick="workButton()" class="button is-primary is-light is-outlined mx-3">Start a work cycle</button>
+    </div>
     </div>
 </body>
 {% endblock %}

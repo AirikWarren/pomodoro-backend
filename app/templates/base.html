@@ -15,13 +15,14 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     </head>
     <body>
-    <nav id="navigation" class="container">
-        <a href="/about">About</a>
-        <a href="/index">Home</a>
-        <a href="mailto:airikwarren@gmail.com">Contact</a>
+    <div class="notification is-info has-text-centered">
+    <nav id="navigation" class="columns">
+        <a href="/about" class="column is-4">About</a>
+        <a href="/index" class="column is-4">Home</a>
+        <a href="mailto:airikwarren@gmail.com" class="column is-4">Contact</a>
     </nav>
     </div>
-    <section class="container">
+    <section class="container has-text-centered py-4">
     <div class="content">
     {%block content%}
     {%endblock%}
