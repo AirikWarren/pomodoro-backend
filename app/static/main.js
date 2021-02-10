@@ -9,7 +9,7 @@ const DEFAULT_WORK_LEN = (25 * 60)
 pageConfig = {
     flags : { isAutoplay : false, isSessionActive : false },
     audio : { maxNotificationDings : 10, dingsPlayedSinceReset : 0 },
-    timer : { lengthOfBreak : 5, lengthOfWorkCycle : DEFAULT_WORK_LEN},
+    timer : { lengthOfBreak : DEFAULT_BREAK_LEN, lengthOfWorkCycle : DEFAULT_WORK_LEN},
     modeSequence : ['work', 'break', 'longBreak']
 }
 
