@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-'''Miscelaneous helper functions and home of the Timer class'''
+'''Miscellaneous helper functions and home of the Timer class'''
 import hashlib
 import time
 from typing import Union
