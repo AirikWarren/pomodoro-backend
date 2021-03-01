@@ -27,7 +27,7 @@ class Timer:
 
     password : str - self-explantory, this will get an md5 hash applied to it in the
                constructor so if you need to preserve/persist this data don't rely on
-               this object to do it'
+               this object to do it
     '''
 
     def __init__(self, duration : int=300,
