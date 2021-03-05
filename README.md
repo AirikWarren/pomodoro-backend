@@ -1,2 +1,2 @@
-# pomodoro-backend
-The backend / API for an internet synchronized Pomodoro timer, written with the Flask microframework.
+# halle
+The branch in which Halle puts the things that didn't get broken for eventual merging with main.
