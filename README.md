@@ -4,7 +4,7 @@ A simple productivity application for practicing the pomodoro time management te
 
 ## Developer / Contributer Quickstart _(WIP, last edited 03/21/2021)_
 
-This quickstart is intentionally terse and is intended to be used as a quick reference when reading through the codebase rather than a comprehensive comprehensive guide directed at users of all experience levels.
+This quickstart is intentionally terse and is intended to be used as a quick reference when reading through the codebase rather than a comprehensive guide directed at users of all experience levels.
 
 Assistance with issues in the initial set-up (cloning repos, checking out new branches, initializing venvs, etc) are beyond the scope of this quickstart.
 
