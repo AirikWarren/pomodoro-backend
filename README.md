@@ -1,6 +1,6 @@
 # Tomato Timer
 
-A simple productivity application for practicing the pomodoro time management technique with others over the internet., if you're interested in it solely in that capacity there is a live web client up at [tomatotimer.in](www.http://tomatotimer.in/)
+A simple productivity application for practicing the pomodoro time management technique with others over the internet. If you're interested in it solely in that capacity, there is a live web client up at [tomatotimer.in](http://www.tomatotimer.in/)
 
 ## Developer / Contributer Quickstart _(WIP, last edited 03/21/2021)_
 
@@ -10,16 +10,16 @@ Assistance with issues in the initial set-up (cloning repos, checking out new br
 
 
 ### Initial Set-Up
-1) Clone this repository from the repo 
-2) Checkout a new branch with a semi-descriptive name (ie. timer-bugfix)
-3) Initialize a virtual environment 
-4) Install the project build dependencies in requirements.txt 
-5) verify correct installation by evoking  ```flask run``` from the project directory
+1) Clone this repository from the GitHub.
+2) Checkout to a new branch with a semi-descriptive name (ie. timer-bugfix).
+3) Initialize a virtual environment.
+4) Install the project build dependencies in requirements.txt. 
+5) Verify correct installation by evoking  ```flask run``` from the project directory.
 ### Project Structure 
-License, readme, and deployment files excluded.
+**NOTE: License, readme, and deployment files excluded.**
 > app 
 
-The bulk of the application logic resides in this director
+The bulk of the application logic resides in this directory
 
  >> app/static
 
